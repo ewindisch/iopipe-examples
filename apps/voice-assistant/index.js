@@ -1,4 +1,7 @@
-var iopipe = require("iopipe")
+var iopipe = require("iopipe")()
+var aws_iopipe = require("iopipe")({
+  exec_driver: "aws"
+})
 /*
   Pass event containing:
     audio - Audio to be transcribed
@@ -17,5 +20,6 @@ module.exports = iopipe.define(
 
 function lookup_exec(event, context) {
   // Assume trained functions are registered under voice-assistant namespace.
-  iopipe.define("voice-assistant/" + event[0])(event[1], context)
+  // runs this pipe on AWS Lambda.
+  aws_iopipe.define("voice-assistant/" + event[0])(event[1], context)
 }
